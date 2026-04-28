@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page { size: {{TRIM_W}}in {{TRIM_H}}in; margin: 0; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: {{TRIM_W}}in;
+        height: {{TRIM_H}}in;
+        background: rgb({{BG_R}}, {{BG_G}}, {{BG_B}});
+        color: {{TEXT_COLOR}};
+        font-family: 'Playfair Display', 'Times New Roman', serif;
+        position: relative;
+        overflow: hidden;
+      }
+      .container {
+        position: absolute;
+        inset: 0.6in;
+        display: flex;
+        flex-direction: column;
+      }
+      .blurb {
+        flex: 1;
+        font-size: 11pt;
+        line-height: 1.45;
+        text-align: justify;
+        hyphens: auto;
+      }
+      .blurb p { text-indent: 0; margin-bottom: 0.14in; }
+      .blurb .placeholder {
+        font-style: italic;
+        opacity: 0.75;
+        text-align: center;
+        margin-top: 1in;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 0.25in;
+        margin-top: 0.35in;
+      }
+      .bio {
+        flex: 1;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 9pt;
+        line-height: 1.4;
+        opacity: 0.9;
+      }
+      .bio-label {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 7pt;
+        margin-bottom: 0.06in;
+        opacity: 0.75;
+      }
+      .isbn-box {
+        width: 2in;
+        height: 1.2in;
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 7pt;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="blurb">{{BLURB_HTML}}</div>
+      <div class="footer">
+        <div class="bio">{{BIO_HTML}}</div>
+        <div class="isbn-box">ISBN Barcode Area</div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page { size: {{TRIM_W}}in {{TRIM_H}}in; margin: 0; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: {{TRIM_W}}in;
+        height: {{TRIM_H}}in;
+        overflow: hidden;
+        position: relative;
+        background: #000;
+      }
+      .art {
+        position: absolute;
+        inset: 0;
+        background-image: url('{{ART_DATA_URL}}');
+        background-size: cover;
+        background-position: center;
+      }
+      .gradient {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 55%;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.92) 0%,
+          rgba(0, 0, 0, 0.75) 35%,
+          rgba(0, 0, 0, 0.35) 75%,
+          rgba(0, 0, 0, 0) 100%
+        );
+      }
+      .author {
+        position: absolute;
+        top: 0.6in;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #fff;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 20pt;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      }
+      .title-block {
+        position: absolute;
+        bottom: 0.75in;
+        left: 0.4in;
+        right: 0.4in;
+        text-align: center;
+        color: #fff;
+      }
+      .title {
+        font-family: 'Playfair Display', 'Times New Roman', serif;
+        font-weight: 900;
+        font-size: 72pt;
+        line-height: 1.04;
+        letter-spacing: -0.01em;
+        text-shadow: 0 4px 14px rgba(0, 0, 0, 0.75);
+      }
+      .subtitle {
+        margin-top: 0.18in;
+        font-family: 'Playfair Display', 'Times New Roman', serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 24pt;
+        line-height: 1.2;
+        color: rgba(255, 255, 255, 0.92);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="art"></div>
+    <div class="gradient"></div>
+    <div class="author">{{AUTHOR}}</div>
+    <div class="title-block">
+      <div class="title">{{TITLE}}</div>
+      {{SUBTITLE_BLOCK}}
+    </div>
+  </body>
+</html>

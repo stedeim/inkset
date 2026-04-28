@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @page { size: {{WRAP_W}}in {{WRAP_H}}in; margin: 0; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: {{WRAP_W}}in;
+        height: {{WRAP_H}}in;
+        background: rgb({{BG_R}}, {{BG_G}}, {{BG_B}});
+        position: relative;
+        overflow: hidden;
+      }
+      .panel {
+        position: absolute;
+        top: 0;
+        height: {{WRAP_H}}in;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      }
+      .back {
+        left: 0;
+        width: calc({{TRIM_W}}in + 0.125in);
+        background-image: url('{{BACK_DATA_URL}}');
+      }
+      .spine {
+        left: calc({{TRIM_W}}in + 0.125in);
+        width: {{SPINE_W}}in;
+        background-image: url('{{SPINE_DATA_URL}}');
+      }
+      .front {
+        right: 0;
+        width: calc({{TRIM_W}}in + 0.125in);
+        background-image: url('{{FRONT_DATA_URL}}');
+      }
+      .trim-marks {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel back"></div>
+    <div class="panel spine"></div>
+    <div class="panel front"></div>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+appId: com.deimira.inkset
+productName: Inkset
+directories:
+  output: release
+  buildResources: build
+files:
+  - out/**
+  - package.json
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!scripts/*'
+  - '!tests/*'
+  - '!manuscripts/*'
+  - '!output/*'
+  - '!release/*'
+  - '!prompts/*'
+  - '!node_modules/@types/**'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+  - '!{.git,.github}/**'
+extraResources:
+  - from: prompts
+    to: prompts
+    filter:
+      - '*.md'
+  - from: src/main/templates
+    to: templates
+    filter:
+      - '*.html'
+asarUnpack:
+  - '**/better-sqlite3/**/*'
+  - '**/@lesjoursfr/html-to-epub/**/*'
+  - resources/**
+mac:
+  category: public.app-category.productivity
+  icon: build/icon.icns
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  notarize: false
+  identity: null
+  target:
+    - target: dmg
+      arch:
+        - arm64
+    - target: zip
+      arch:
+        - arm64
+  extendInfo:
+    - NSDocumentsFolderUsageDescription: Inkset needs access to your Documents folder to save generated books.
+    - NSDownloadsFolderUsageDescription: Inkset may open generated files from your Downloads folder.
+dmg:
+  artifactName: Inkset-${version}-${arch}.${ext}
+  writeUpdateInfo: false
+npmRebuild: false
+publish: null

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page { size: {{SPINE_W}}in {{SPINE_H}}in; margin: 0; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: {{SPINE_W}}in;
+        height: {{SPINE_H}}in;
+        background: rgb({{BG_R}}, {{BG_G}}, {{BG_B}});
+        color: {{TEXT_COLOR}};
+        position: relative;
+        overflow: hidden;
+      }
+      .rotator {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+        white-space: nowrap;
+        font-family: 'Playfair Display', 'Times New Roman', serif;
+        font-size: 13pt;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        display: {{SHOW_TEXT}};
+      }
+      .rotator .author {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 500;
+        font-size: 11pt;
+        letter-spacing: 0.1em;
+        margin-left: 0.35in;
+        opacity: 0.85;
+      }
+      .sep {
+        display: inline-block;
+        margin: 0 0.18in;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rotator">
+      <span>{{TITLE}}</span>
+      <span class="sep">·</span>
+      <span class="author">{{AUTHOR}}</span>
+    </div>
+  </body>
+</html>

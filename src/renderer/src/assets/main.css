@@ -1,0 +1,359 @@
+@import 'tailwindcss';
+
+/* Warm Antiquarian Modernism — tokens */
+:root {
+  /* Surfaces */
+  --color-bg: #fafaf9;
+  --color-surface: #e7e5e4;
+  --color-ink: #1c1917;
+
+  /* Text */
+  --color-text-1: #1c1917;
+  --color-text-2: #44403c;
+  --color-text-3: #a8a29e;
+
+  /* Accents */
+  --color-gold: #c8a96e;
+  --color-tobacco: #8b5e3c;
+  --color-terracotta: #d97b4f;
+  --color-sage: #4a6741;
+
+  /* Lines */
+  --color-border: #d6d3d1;
+
+  /* Semantic aliases used by component utilities */
+  --background: var(--color-bg);
+  --foreground: var(--color-text-1);
+  --surface: var(--color-surface);
+  --muted: var(--color-surface);
+  --muted-foreground: var(--color-text-2);
+  --border: var(--color-border);
+  --ring: var(--color-gold);
+  --accent: var(--color-gold);
+  --accent-hover: var(--color-tobacco);
+  --warn: var(--color-terracotta);
+  --success: var(--color-sage);
+
+  --radius-card: 4px;
+  --radius-button: 6px;
+
+  color-scheme: light;
+}
+
+html.dark {
+  --color-bg: #1c1917;
+  --color-surface: #292524;
+  --color-ink: #0c0a09;
+
+  --color-text-1: #fafaf9;
+  --color-text-2: #d6d3d1;
+  --color-text-3: #78716c;
+
+  --color-border: #44403c;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text-1);
+  --color-surface: var(--color-surface);
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-surface);
+  --color-muted-foreground: var(--color-text-2);
+  --color-text-tertiary: var(--color-text-3);
+  --color-border: var(--color-border);
+  --color-ring: var(--color-gold);
+  --color-gold: var(--color-gold);
+  --color-tobacco: var(--color-tobacco);
+  --color-terracotta: var(--color-terracotta);
+  --color-sage: var(--color-sage);
+
+  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-1);
+    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  .display,
+  .serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 150ms ease-out, color 150ms ease-out, border-color
+      150ms ease-out;
+    user-select: none;
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-gold);
+    color: var(--color-text-1);
+    border: 1px solid transparent;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-tobacco);
+    color: var(--color-bg);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    border: 1.5px solid var(--color-text-3);
+    color: var(--color-text-1);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--color-text-2);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: var(--color-text-2);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    color: var(--color-text-1);
+    text-decoration: underline;
+  }
+
+  .panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: var(--color-bg);
+    color: var(--color-text-1);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    transition: border-color 150ms ease-out;
+    outline: none;
+  }
+  .input-field:focus {
+    border-color: var(--color-gold);
+  }
+  .input-field:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  textarea.input-field {
+    resize: vertical;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .chip-gold {
+    background-color: var(--color-gold);
+    color: var(--color-text-1);
+  }
+  .chip-sage {
+    background-color: var(--color-sage);
+    color: var(--color-bg);
+  }
+  .chip-terracotta {
+    background-color: var(--color-terracotta);
+    color: var(--color-bg);
+  }
+
+  .divider-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-3);
+  }
+}
+
+/* Manuscript canvas — the one place a drop shadow is allowed. */
+.ms-canvas {
+  position: relative;
+  background-color: var(--color-bg);
+  box-shadow: 0 2px 24px rgba(28, 25, 23, 0.08);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-text-1);
+  padding: 64px 56px;
+  border-radius: 0;
+  font-feature-settings: 'liga' 1, 'dlig' 1, 'kern' 1;
+}
+html.dark .ms-canvas {
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* Paper grain — ~3% opacity SVG noise, sits above the page bg but below the text. */
+.ms-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.03;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
+}
+html.dark .ms-canvas::before {
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
+.ms-canvas > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ms-canvas h1,
+.ms-canvas h2,
+.ms-canvas h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--color-text-1);
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+.ms-canvas h1 { font-size: 40px; font-weight: 600; }
+.ms-canvas h2 { font-size: 30px; font-weight: 500; }
+.ms-canvas h3 { font-size: 22px; font-weight: 600; }
+
+/* Running header — rendered at the top of each chapter section, small caps. */
+.ms-canvas .ms-running {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-3);
+  text-align: center;
+  margin-top: 48px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ms-canvas p {
+  margin: 0 0 16px;
+}
+
+/* Drop cap — explicit <span class="drop-cap"> only.
+   We do NOT use ::first-letter because Chromium's pseudo-element can apply
+   in surprising ways when a paragraph contains inline elements or line
+   breaks. The span wrapper is emitted by the preprocessor in
+   Canvas.tsx::textToHtml for the first character of the first paragraph
+   after each chapter heading — nothing else. Geometry is shared with the
+   PDF template in src/main/templates/interior.html; keep them in sync. */
+.ms-canvas p.chapter-opener {
+  padding-left: 8px;
+  text-indent: -8px;
+}
+.ms-canvas .drop-cap {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  font-size: 4.5em;
+  line-height: 0.85;
+  float: left;
+  margin-right: 0.08em;
+  margin-top: 0.08em;
+  margin-bottom: -0.1em;
+  padding: 0;
+  color: var(--color-tobacco);
+}
+html.dark .ms-canvas .drop-cap {
+  color: var(--color-gold);
+}
+
+/* Decorative fleuron for scene breaks — *** / --- in source become ornaments. */
+.ms-canvas .ms-fleuron {
+  display: block;
+  height: 20px;
+  margin: 32px auto;
+  width: 120px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 20' fill='%23C8A96E'><path d='M12 10 q8 -10 16 0 q-8 10 -16 0 z'/><circle cx='40' cy='10' r='1.4'/><circle cx='50' cy='10' r='1.8'/><path d='M60 10 m-4 0 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0'/><circle cx='70' cy='10' r='1.8'/><circle cx='80' cy='10' r='1.4'/><path d='M92 10 q8 -10 16 0 q-8 10 -16 0 z'/></svg>");
+}
+
+.ms-canvas p.ms-changed {
+  border-left: 3px solid var(--color-gold);
+  padding-left: 16px;
+  margin-left: -19px;
+}
+.ms-canvas p.ms-warning {
+  border-left: 3px solid var(--color-terracotta);
+  padding-left: 16px;
+  margin-left: -19px;
+}
+.ms-canvas .ProseMirror:focus {
+  outline: none;
+}
+.ms-canvas .ms-spelling {
+  text-decoration: wavy underline var(--color-terracotta);
+  text-underline-offset: 3px;
+}
+.ms-canvas .ms-format {
+  text-decoration: underline var(--color-gold);
+  text-underline-offset: 3px;
+}
+
+/* Thin scrollbars that match the palette */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-3);
+}
