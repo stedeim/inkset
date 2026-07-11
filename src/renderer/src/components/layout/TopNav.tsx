@@ -24,7 +24,7 @@ export function TopNav({ onReset, onOpenPalette }: TopNavProps): React.JSX.Eleme
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <Books size={20} weight="regular" color="#C8A96E" />
+        <Books size={20} weight="regular" color="var(--color-gold)" />
         <span
           style={{
             fontFamily: "'Cormorant Garamond', serif",
@@ -90,7 +90,7 @@ export function TopNav({ onReset, onOpenPalette }: TopNavProps): React.JSX.Eleme
             width: 32,
             height: 32,
             borderRadius: 6,
-            color: '#C8A96E',
+            color: 'var(--color-gold)',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer'
