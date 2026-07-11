@@ -124,6 +124,10 @@ html.dark {
     opacity: 0.5;
     cursor: not-allowed;
   }
+  .btn:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
 
   .btn-primary {
     background-color: var(--color-gold);
@@ -174,6 +178,11 @@ html.dark {
   }
   .input-field:focus {
     border-color: var(--color-gold);
+  }
+  .input-field:focus-visible {
+    border-color: var(--color-gold);
+    outline: 2px solid var(--color-gold);
+    outline-offset: -1px;
   }
   .input-field:disabled {
     opacity: 0.6;
@@ -356,4 +365,27 @@ html.dark .ms-canvas .drop-cap {
 }
 *::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-3);
+}
+
+/* Global keyboard-focus indicator for interactive elements that don't carry a
+   component-specific rule (raw buttons, the dropzone, chapter/segmented
+   controls). :where() keeps specificity at 0 so .btn/.input-field focus rules
+   above still win. Only shows for keyboard users, never on mouse click. */
+:where(a, button, [role='button'], [tabindex]:not([tabindex='-1']), summary):focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Respect the OS "reduce motion" setting — flattens spinners (phosphor-spin),
+   the editing caret blink, command-palette/modal entrance animations, and any
+   smooth scrolling. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

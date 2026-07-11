@@ -31,6 +31,10 @@ Owner: Deimira. Output target: 12+ books/year (mix of fiction and non-fiction). 
 
 ## Design System — "Warm Antiquarian Modernism"
 
+> **ALWAYS use the `ui-ux-pro-max` skill (installed at `.claude/skills/`) for any UI or design work in this repo** — planning, building, editing, or reviewing components, layouts, styling, spacing, typography, color, accessibility, or interaction/animation. This is a standing instruction: invoke the skill automatically before writing UI code or making a visual decision; do not wait to be asked. The sibling skills (`design-system`, `brand`, `design`, `ui-styling`, `slides`, `banner-design`) apply to their respective niches.
+>
+> **Constraint:** the skill knows 67 styles, most of which this app bans. Its guidance is subordinate to the house rules below — use it for spacing/state/accessibility/typography reasoning and per-stack (React/Tailwind) best practices, never to introduce a style, color, or effect this section prohibits. When the skill and this section conflict, this section wins.
+
 Handcrafted editorial feel. No gradients, no glassmorphism, no backdrop-filter, no drop-shadows on cards (shadow is only on the manuscript canvas). No blues, purples, cyans anywhere.
 
 **Colors (CSS tokens in `src/renderer/src/assets/main.css`):**
