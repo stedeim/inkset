@@ -22,6 +22,7 @@ export function Builder({ id }: { id: string }) {
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState("");
   const [building, setBuilding] = useState(false);
+  const [showPanelMobile, setShowPanelMobile] = useState(false);
   const startedRef = useRef(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -152,6 +153,17 @@ export function Builder({ id }: { id: string }) {
               {building ? "Agents are building…" : "Chat to refine your app"}
             </p>
           </div>
+          {/* Mobile: open the agent/preview panel (hidden on desktop where it's always visible) */}
+          <button
+            onClick={() => setShowPanelMobile(true)}
+            className="btn btn-secondary shrink-0 p-2 lg:hidden"
+            aria-label="Show build panel"
+          >
+            <Icon name={building ? "users" : "play"} size={16} />
+            {building && (
+              <span className="h-1.5 w-1.5 rounded-full bg-accent-amber animate-pulse" />
+            )}
+          </button>
         </header>
 
         <div ref={scrollRef} className="min-h-0 flex-1 space-y-5 overflow-y-auto p-5">
@@ -203,10 +215,29 @@ export function Builder({ id }: { id: string }) {
         </div>
       </div>
 
-      {/* Preview column */}
+      {/* Preview column (desktop) */}
       <div className="hidden w-[46%] max-w-2xl shrink-0 lg:block">
         <PreviewPane project={project} building={building} />
       </div>
+
+      {/* Preview panel (mobile slide-over) */}
+      {showPanelMobile && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-ink-950 lg:hidden">
+          <div className="flex items-center justify-between border-b border-line px-4 py-3">
+            <span className="font-semibold text-white">Build</span>
+            <button
+              onClick={() => setShowPanelMobile(false)}
+              className="btn btn-ghost p-2"
+              aria-label="Close build panel"
+            >
+              <Icon name="x" size={18} />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1">
+            <PreviewPane project={project} building={building} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
