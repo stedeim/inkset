@@ -4,12 +4,22 @@ import { requireRole } from "@/modules/auth/current-user";
 import { getClientMembership, needsOnboarding } from "@/modules/membership/queries";
 import { capabilitiesFor } from "@/modules/tiers/policy";
 import { PRIMARY_GOAL_LABELS, type Goals } from "@/modules/intake/schema";
+import { getConsistency, getPlanForDay, getRecentCheckIns } from "@/modules/plan/queries";
+import { PlanSection } from "./plan-section";
+import { TrackingSection } from "./tracking-section";
 
 export default async function ClientHome() {
   const user = await requireRole("CLIENT");
   const membership = await getClientMembership(db, user.id);
   if (!membership) redirect("/login");
   if (needsOnboarding(membership)) redirect("/client/onboarding");
+
+  const today = new Date();
+  const [plan, checkIns, consistency] = await Promise.all([
+    getPlanForDay(db, membership.id, today),
+    getRecentCheckIns(db, membership.id, 7, today),
+    getConsistency(db, membership.id, 7, today),
+  ]);
 
   const tier = capabilitiesFor(membership.tier);
   const goals = membership.intake?.goals as Goals | undefined;
@@ -20,9 +30,6 @@ export default async function ClientHome() {
       <h1 className="font-serif text-4xl text-[var(--color-ink)]">
         Good to see you, {user.fullName.split(" ")[0]}.
       </h1>
-      <p className="mt-3 text-[var(--color-stone)]">
-        Your program is taking shape. Today’s plan and trends will appear here.
-      </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="section-card">
@@ -44,6 +51,9 @@ export default async function ClientHome() {
           </p>
         </div>
       </div>
+
+      <PlanSection items={plan} />
+      <TrackingSection checkIns={checkIns} consistency={consistency} today={today} />
     </div>
   );
 }
