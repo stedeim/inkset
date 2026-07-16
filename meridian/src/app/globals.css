@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* Meridian design tokens — quiet luxury: deep ink, warm ivory, muted brass.
+   No gradients, no neon. Restraint signals premium. */
+@theme {
+  --color-ink: #14110f;
+  --color-ivory: #f6f3ee;
+  --color-stone: #a8a29b;
+  --color-brass: #b08d57;
+  --color-sage: #5c6b57;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+html {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
