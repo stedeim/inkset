@@ -45,7 +45,7 @@ export async function signupAction(_prev: FormState, formData: FormData): Promis
 
   const { token, expiresAt } = await createSession(db, result.userId, await requestContext());
   await setSessionCookie(token, expiresAt);
-  redirect("/client");
+  redirect("/onboarding");
 }
 
 export async function loginAction(_prev: FormState, formData: FormData): Promise<FormState> {

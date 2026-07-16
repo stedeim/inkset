@@ -12,7 +12,7 @@ export default async function ClientHome() {
   const user = await requireRole("CLIENT");
   const membership = await getClientMembership(db, user.id);
   if (!membership) redirect("/login");
-  if (needsOnboarding(membership)) redirect("/client/onboarding");
+  if (needsOnboarding(membership)) redirect("/onboarding");
 
   const today = new Date();
   const [plan, checkIns, consistency] = await Promise.all([

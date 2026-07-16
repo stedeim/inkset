@@ -50,15 +50,27 @@ meridian/
 └── tests/                     # Vitest unit tests for domain logic
 ```
 
-## Getting started
+## Getting started (on your own machine)
 
 ```bash
 cd meridian
 cp .env.example .env.local     # fill DATABASE_URL + AUTH_SECRET
 npm install
 npm run db:migrate             # requires a running Postgres
-npm run dev
+npm run db:seed                # demo coach + client with sample data
+npm run dev                    # http://localhost:3000
 ```
+
+Sign up as a new member to experience the immersive onboarding funnel
+(`/onboarding`), or log in with a seeded demo account to see the dashboards.
+
+## Onboarding funnel (premium acquisition experience)
+
+`/onboarding` is a committed dark, cinematic, one-question-at-a-time flow —
+micro-commitments, a crafted "reviewing your intake" pause, then a personalized
+protocol reveal before anything is asked of the member. It writes the same
+validated `Intake` the rest of the app reads, and activates the membership.
+Display type is Cormorant Garamond (self-hosted via `next/font`).
 
 ## Authentication
 

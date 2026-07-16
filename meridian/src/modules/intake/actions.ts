@@ -52,3 +52,22 @@ export async function submitIntakeAction(
   await saveIntake(db, { membershipId: membership.id, actorId: user.id, input: parsed.data });
   redirect("/client");
 }
+
+/**
+ * Structured submit used by the immersive onboarding funnel, which collects a
+ * fully-typed payload client-side rather than a flat FormData. Validated again
+ * on the server before persisting.
+ */
+export async function completeOnboarding(input: unknown): Promise<{ ok: false } | void> {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "CLIENT") redirect("/login");
+
+  const membership = await getClientMembership(db, user.id);
+  if (!membership) return { ok: false };
+
+  const parsed = intakeSchema.safeParse(input);
+  if (!parsed.success) return { ok: false };
+
+  await saveIntake(db, { membershipId: membership.id, actorId: user.id, input: parsed.data });
+  redirect("/client");
+}

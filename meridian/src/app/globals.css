@@ -8,7 +8,7 @@
   --color-stone: #a8a29b;
   --color-brass: #b08d57;
   --color-sage: #5c6b57;
-  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
@@ -99,4 +99,290 @@ textarea.field-input {
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Immersive onboarding funnel — a committed dark, cinematic world.
+   Scoped under .funnel so it never touches the light dashboard.
+   ───────────────────────────────────────────────────────────── */
+.funnel {
+  --f-obsidian: #0c0a09;
+  --f-ink: #14110f;
+  --f-parchment: #e7e2d6;
+  --f-parchment-dim: #c9c3b6;
+  --f-stone: #8a837a;
+  --f-brass: #b08d57;
+  --f-brass-soft: #7e6541;
+  --f-line: rgba(176, 141, 87, 0.22);
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: radial-gradient(120% 80% at 50% -10%, #17130f 0%, var(--f-ink) 42%, var(--f-obsidian) 100%);
+  color: var(--f-parchment);
+}
+.funnel__progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--f-brass-soft), var(--f-brass));
+  transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 40;
+}
+.funnel__wordmark {
+  position: fixed;
+  top: 26px;
+  left: 34px;
+  font-size: 12px;
+  letter-spacing: 0.42em;
+  color: var(--f-parchment);
+  z-index: 30;
+}
+.funnel__index {
+  position: fixed;
+  top: 28px;
+  right: 34px;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: var(--f-stone);
+  font-variant-numeric: tabular-nums;
+  z-index: 30;
+}
+.funnel__stage {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px;
+}
+.funnel__screen {
+  max-width: 720px;
+  width: 100%;
+  animation: funnelRise 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes funnelRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.funnel__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--f-brass);
+  margin-bottom: 26px;
+  font-variant-numeric: tabular-nums;
+}
+.funnel__display {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  margin: 0;
+}
+.funnel__question {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.1;
+  text-wrap: balance;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  margin: 0;
+}
+.funnel__lede {
+  margin-top: 22px;
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  line-height: 1.7;
+  color: var(--f-parchment-dim);
+  max-width: 30em;
+}
+.funnel__fine {
+  margin-top: 38px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--f-stone);
+}
+.funnel__cta {
+  margin-top: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 34px;
+  background: var(--f-parchment);
+  color: var(--f-ink);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.28s ease;
+}
+.funnel__cta:hover { background: #fff; transform: translateY(-1px); }
+.funnel__cta:disabled { opacity: 0.55; cursor: default; }
+.funnel__skip {
+  margin-top: 20px;
+  display: inline-block;
+  background: none;
+  border: none;
+  color: var(--f-stone);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.funnel__skip:hover { color: var(--f-parchment); }
+.funnel__options {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.funnel__option {
+  text-align: left;
+  padding: 20px 24px;
+  border: 1px solid var(--f-line);
+  border-radius: 3px;
+  background: rgba(231, 226, 214, 0.015);
+  color: var(--f-parchment);
+  font-size: 1.05rem;
+  font-family: var(--font-sans);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.24s ease;
+}
+.funnel__option:hover {
+  border-color: var(--f-brass);
+  background: rgba(176, 141, 87, 0.06);
+  transform: translateY(-1px);
+}
+.funnel__option .funnel__sub {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--f-stone);
+  margin-top: 4px;
+}
+.funnel__mark {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: var(--f-brass);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.24s ease;
+}
+.funnel__option:hover .funnel__mark { opacity: 1; transform: translateX(0); }
+.funnel__field {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 32em;
+}
+.funnel__field textarea,
+.funnel__field input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--f-line);
+  color: var(--f-parchment);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  padding: 10px 2px;
+  outline: none;
+  resize: none;
+  transition: border-color 0.24s ease;
+}
+.funnel__field textarea::placeholder,
+.funnel__field input::placeholder { color: #4a443c; }
+.funnel__field textarea:focus,
+.funnel__field input:focus { border-color: var(--f-brass); }
+.funnel__reviewline {
+  margin: 44px 0 0;
+  height: 1px;
+  background: var(--f-line);
+  position: relative;
+  overflow: hidden;
+  max-width: 30em;
+}
+.funnel__reviewline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--f-brass), transparent);
+  transform: translateX(-100%);
+  animation: funnelSweep 1.6s ease-in-out infinite;
+}
+@keyframes funnelSweep { to { transform: translateX(100%); } }
+.funnel__status {
+  margin-top: 22px;
+  font-size: 0.95rem;
+  color: var(--f-parchment-dim);
+  min-height: 1.4em;
+  transition: opacity 0.4s ease;
+}
+.funnel__revealfocus {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  color: var(--f-brass);
+  margin-top: 6px;
+  line-height: 1.1;
+}
+.funnel__pillars {
+  margin-top: 38px;
+  display: grid;
+  gap: 1px;
+  background: var(--f-line);
+  border: 1px solid var(--f-line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.funnel__pillar { background: var(--f-ink); padding: 22px 24px; }
+.funnel__pillar .funnel__k {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--f-stone);
+}
+.funnel__pillar .funnel__v {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  margin-top: 8px;
+  color: var(--f-parchment);
+}
+.funnel__team {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+}
+.funnel__team .funnel__role {
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--f-stone);
+}
+.funnel__team .funnel__name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  margin-top: 6px;
+  color: var(--f-parchment);
+}
+.funnel__consent {
+  margin-top: 36px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 0.95rem;
+  color: var(--f-parchment-dim);
+  line-height: 1.6;
+  max-width: 34em;
+  cursor: pointer;
+}
+.funnel__consent input { margin-top: 5px; accent-color: var(--f-brass); }
+@media (prefers-reduced-motion: reduce) {
+  .funnel__screen { animation: none; }
+  .funnel__reviewline::after { animation: none; opacity: 0.5; }
+  .funnel__cta, .funnel__option { transition: none; }
 }
