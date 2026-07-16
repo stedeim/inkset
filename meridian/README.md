@@ -75,7 +75,7 @@ Demo accounts (after `npm run db:seed`): `coach@meridian.app` / `client@meridian
 
 - [x] Project setup & structure
 - [x] Auth & user model with tiers (argon2, revocable sessions, audit trail)
-- [ ] Onboarding / intake flow (Zod-validated, consent capture)
+- [x] Onboarding / intake flow (Zod-validated, consent capture, activates membership)
 - [ ] Client dashboard (today's plan, tracking, trends, messaging)
 - [ ] Coach workspace (roster, plan editing, notes, milestones)
 - [ ] Tier-specific UX + premium styling pass
