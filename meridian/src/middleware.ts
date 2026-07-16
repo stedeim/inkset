@@ -1,15 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { SESSION_COOKIE } from "@/modules/auth/constants";
 
 /**
- * Edge middleware skeleton. Route protection lands here in the auth step:
- *  - unauthenticated requests to /client or /coach → redirect to /login
- *  - role mismatch (client hitting /coach, or vice versa) → 404, so the app
- *    never confirms the existence of the other surface.
- *
- * Session verification is intentionally not wired up yet — that arrives with
- * the Auth.js integration in the next step.
+ * Edge middleware: a cheap gate that redirects unauthenticated requests away
+ * from protected areas based on cookie presence alone. It deliberately does NOT
+ * hit the database (Prisma cannot run on the Edge) — full token validation and
+ * role enforcement happen in the protected layouts, which run on Node.
  */
-export function middleware(_request: NextRequest) {
+export function middleware(request: NextRequest) {
+  const hasSession = request.cookies.has(SESSION_COOKIE);
+  if (!hasSession) {
+    const login = new URL("/login", request.url);
+    return NextResponse.redirect(login);
+  }
   return NextResponse.next();
 }
 

@@ -68,16 +68,19 @@ model User {
   auditEntries AuditLog[]       @relation("ActorAudit")
 }
 
-// Server-side session records for auditable session handling.
+// Server-side session records for auditable, revocable session handling.
+// The raw session token is never stored — only its SHA-256 hash — so a database
+// read cannot reconstruct a live session cookie.
 model Session {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt    DateTime
-  createdAt    DateTime @default(now())
-  lastSeenAt   DateTime @default(now())
-  ipAddress    String?
-  userAgent    String?
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+  ipAddress  String?
+  userAgent  String?
 
   @@index([userId])
 }

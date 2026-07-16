@@ -60,10 +60,22 @@ npm run db:migrate             # requires a running Postgres
 npm run dev
 ```
 
-## Roadmap (post-scaffold)
+## Authentication
 
-1. Auth & user model with tiers (Auth.js + argon2, session handling)
-2. Onboarding / intake flow (Zod-validated, consent capture)
-3. Client dashboard (today's plan, tracking, trends, messaging)
-4. Coach workspace (roster, plan editing, notes, milestones)
-5. Tier-specific UX + premium styling pass
+Email/password with argon2id hashing and **revocable, database-backed sessions**
+(the raw token is never stored — only its SHA-256 hash). Self-serve signup creates
+a `CLIENT` with a tiered membership; coaches/admins are provisioned via seed/admin.
+Route protection is two-layered: a cheap cookie gate in Edge middleware, plus full
+token validation and role enforcement in the `/client` and `/coach` layouts (Node).
+
+Demo accounts (after `npm run db:seed`): `coach@meridian.app` / `client@meridian.app`
+— passwords in `prisma/seed.ts`.
+
+## Roadmap
+
+- [x] Project setup & structure
+- [x] Auth & user model with tiers (argon2, revocable sessions, audit trail)
+- [ ] Onboarding / intake flow (Zod-validated, consent capture)
+- [ ] Client dashboard (today's plan, tracking, trends, messaging)
+- [ ] Coach workspace (roster, plan editing, notes, milestones)
+- [ ] Tier-specific UX + premium styling pass
