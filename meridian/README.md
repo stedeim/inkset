@@ -90,5 +90,7 @@ Demo accounts (after `npm run db:seed`): `coach@meridian.app` / `client@meridian
 - [x] Onboarding / intake flow (Zod-validated, consent capture, activates membership)
 - [x] Client dashboard (today's plan complete/skip, daily check-in, 7-day trends, consistency)
 - [x] Coach workspace (roster, client detail, plan editor, notes, milestones — all audited)
+- [x] Premium acquisition layer: immersive onboarding funnel + membership application ("paywall")
 - [ ] Messaging surface (client ↔ coach)
-- [ ] Tier-specific access enforcement in UX + premium styling pass
+- [ ] Tier-specific access enforcement in UX
+- [ ] Premium styling pass across the logged-in dashboard

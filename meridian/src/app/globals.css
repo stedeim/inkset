@@ -386,3 +386,70 @@ textarea.field-input {
   .funnel__reviewline::after { animation: none; opacity: 0.5; }
   .funnel__cta, .funnel__option { transition: none; }
 }
+
+/* Membership / application screen (shares the dark .funnel world) */
+.funnel__screen--wide { max-width: 720px; }
+@media (min-width: 900px) { .funnel__screen--wide { max-width: 1060px; } }
+.funnel__tiers {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 900px) {
+  .funnel__tiers { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+}
+.funnel__tier {
+  border: 1px solid var(--f-line);
+  border-radius: 5px;
+  padding: 30px 26px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(231, 226, 214, 0.012);
+  text-align: left;
+}
+.funnel__tier--featured {
+  border-color: var(--f-brass);
+  background: rgba(176, 141, 87, 0.05);
+  box-shadow: 0 20px 60px -30px rgba(176, 141, 87, 0.4);
+}
+.funnel__tier .funnel__rec {
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--f-brass); margin-bottom: 14px; min-height: 1em;
+}
+.funnel__tier .funnel__tname { font-family: var(--font-serif); font-size: 1.5rem; }
+.funnel__tier .funnel__price {
+  margin-top: 12px; font-size: 1rem; color: var(--f-parchment); font-variant-numeric: tabular-nums;
+}
+.funnel__tier .funnel__price span { color: var(--f-stone); font-size: 0.8rem; }
+.funnel__tier .funnel__tdesc { margin-top: 14px; font-size: 0.88rem; color: var(--f-parchment-dim); line-height: 1.6; }
+.funnel__tier ul { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+.funnel__tier li { font-size: 0.86rem; color: var(--f-parchment-dim); line-height: 1.5; padding-left: 20px; position: relative; }
+.funnel__tier li::before { content: "—"; position: absolute; left: 0; color: var(--f-brass); }
+.funnel__pick {
+  margin-top: 26px; padding: 14px; border: 1px solid var(--f-parchment); border-radius: 2px;
+  color: var(--f-parchment); font-size: 0.85rem; letter-spacing: 0.05em; text-align: center;
+  background: none; cursor: pointer; transition: all 0.24s ease; font-family: var(--font-sans);
+}
+.funnel__tier--featured .funnel__pick { background: var(--f-parchment); color: var(--f-ink); }
+.funnel__pick:hover { background: var(--f-parchment); color: var(--f-ink); }
+.funnel__assurance {
+  margin: 30px auto 0; font-size: 0.82rem; color: var(--f-stone); line-height: 1.7;
+  max-width: 46em; text-align: center;
+}
+.funnel__flabel {
+  display: block; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--f-stone); margin-bottom: 8px;
+}
+.funnel__finput {
+  width: 100%; padding: 14px 2px; background: transparent; border: none;
+  border-bottom: 1px solid var(--f-line); color: var(--f-parchment);
+  font-size: 1.1rem; outline: none; transition: border-color 0.24s ease; font-family: var(--font-sans);
+}
+.funnel__finput:focus { border-color: var(--f-brass); }
+.funnel__ferror { margin-top: 8px; font-size: 0.82rem; color: #d98b6a; }
+.funnel__back {
+  background: none; border: none; color: var(--f-stone); cursor: pointer;
+  font-size: 0.82rem; letter-spacing: 0.04em; font-family: var(--font-sans);
+}
+.funnel__back:hover { color: var(--f-parchment); }
