@@ -5,6 +5,10 @@ import { getClientMembership, needsOnboarding } from "@/modules/membership/queri
 import { capabilitiesFor } from "@/modules/tiers/policy";
 import { PRIMARY_GOAL_LABELS, type Goals } from "@/modules/intake/schema";
 import { getConsistency, getPlanForDay, getRecentCheckIns } from "@/modules/plan/queries";
+import { getThread } from "@/modules/messaging/queries";
+import { markThreadRead } from "@/modules/messaging/service";
+import { sendClientMessageAction } from "@/modules/messaging/actions";
+import { MessagesPanel } from "@/components/MessagesPanel";
 import { PlanSection } from "./plan-section";
 import { TrackingSection } from "./tracking-section";
 
@@ -15,11 +19,13 @@ export default async function ClientHome() {
   if (needsOnboarding(membership)) redirect("/onboarding");
 
   const today = new Date();
-  const [plan, checkIns, consistency] = await Promise.all([
+  const [plan, checkIns, consistency, thread] = await Promise.all([
     getPlanForDay(db, membership.id, today),
     getRecentCheckIns(db, membership.id, 7, today),
     getConsistency(db, membership.id, 7, today),
+    getThread(db, membership.id),
   ]);
+  await markThreadRead(db, membership.id, user.id);
 
   const tier = capabilitiesFor(membership.tier);
   const goals = membership.intake?.goals as Goals | undefined;
@@ -54,6 +60,17 @@ export default async function ClientHome() {
 
       <PlanSection items={plan} />
       <TrackingSection checkIns={checkIns} consistency={consistency} today={today} />
+
+      <div className="mt-8">
+        <MessagesPanel
+          title="Your coach"
+          hint={`Priority messaging · typically within ${tier.asyncResponseSlaHours}h`}
+          messages={thread?.messages ?? []}
+          viewerId={user.id}
+          action={sendClientMessageAction}
+          otherLabel="You"
+        />
+      </div>
     </div>
   );
 }

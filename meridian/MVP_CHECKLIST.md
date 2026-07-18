@@ -24,11 +24,10 @@ This file is the **durable source of truth** for the hourly build loop. Each run
 
 ## Checklist
 
-- [ ] **M1 — Messaging (client ↔ coach).** MessageThread/Message model already exists.
-  Add: guarded `sendMessage`/`markThreadRead` service (client → own thread; coach → managed
-  thread; admin bypass), queries for the thread, client + coach server actions, a message
-  panel on the client dashboard and on the coach client-detail page, unread indicator.
-  Tests: send allow/deny by ownership. This is a core MVP flow — highest priority.
+- [x] **M1 — Messaging (client ↔ coach).** Guarded `sendMessage`/`markThreadRead` service
+  (client → own thread; coach → managed thread; admin bypass), thread + unread queries,
+  client + coach server actions, a shared `MessagesPanel` on the client dashboard and the
+  coach client-detail page, mark-as-read on view. 5 guard tests (allow/deny/admin/unknown).
 
 - [ ] **M2 — Tier enforcement in the UI.** Use `tierAllows`/`capabilitiesFor` to reflect tier
   differences where the member sees them: show the async response SLA and priority-messaging
@@ -47,4 +46,4 @@ This file is the **durable source of truth** for the hourly build loop. Each run
 - [ ] **M5 — Final pass.** Full typecheck + tests + build green; README "Current state" and
   roadmap updated to reflect the finished MVP; then stop the loop.
 
-_Last updated by the loop: (initialized)_
+_Last updated by the loop: M1 (messaging) complete — 39 tests, build green._

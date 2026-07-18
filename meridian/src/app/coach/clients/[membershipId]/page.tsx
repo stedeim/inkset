@@ -18,6 +18,10 @@ import {
   addPlanItemAction,
   addSessionNoteAction,
 } from "@/modules/coaching/actions";
+import { getThread } from "@/modules/messaging/queries";
+import { markThreadRead } from "@/modules/messaging/service";
+import { sendCoachMessageAction } from "@/modules/messaging/actions";
+import { MessagesPanel } from "@/components/MessagesPanel";
 
 export default async function ClientDetailPage({
   params,
@@ -43,6 +47,9 @@ export default async function ClientDetailPage({
     if (e instanceof AccessError) notFound();
     throw e;
   }
+
+  const thread = await getThread(db, m.id);
+  await markThreadRead(db, m.id, user.id);
 
   const tier = capabilitiesFor(m.tier);
   const goals = m.intake?.goals as Goals | undefined;
@@ -213,6 +220,16 @@ export default async function ClientDetailPage({
           {m.sessionNotes.length === 0 && <li className="section-hint">No notes yet.</li>}
         </ul>
       </section>
+
+      <MessagesPanel
+        title="Messages"
+        hint={`Direct thread with ${m.client.fullName}`}
+        messages={thread?.messages ?? []}
+        viewerId={user.id}
+        action={sendCoachMessageAction}
+        membershipId={m.id}
+        otherLabel={m.client.fullName}
+      />
     </div>
   );
 }
