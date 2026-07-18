@@ -7,7 +7,13 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/modules/auth/current-user";
 import type { Principal } from "@/modules/access/guard";
 import { getCoachProfileId } from "./queries";
-import { addMilestone, addPlanItem, addSessionNote } from "./service";
+import {
+  addMilestone,
+  addPlanItem,
+  addSessionNote,
+  setMilestoneAchieved,
+  setPlanItemCompletionByCoach,
+} from "./service";
 
 async function requireCoachPrincipal(): Promise<Principal> {
   const user = await getCurrentUser();
@@ -75,4 +81,26 @@ export async function addMilestoneAction(formData: FormData): Promise<void> {
 
   await addMilestone(db, principal, parsed.data);
   revalidatePath(`/coach/clients/${parsed.data.membershipId}`);
+}
+
+export async function toggleMilestoneAction(formData: FormData): Promise<void> {
+  const principal = await requireCoachPrincipal();
+  const milestoneId = String(formData.get("milestoneId") ?? "");
+  const membershipId = String(formData.get("membershipId") ?? "");
+  const achieved = formData.get("achieved") === "true";
+  if (!milestoneId) return;
+
+  await setMilestoneAchieved(db, principal, { milestoneId, achieved });
+  if (membershipId) revalidatePath(`/coach/clients/${membershipId}`);
+}
+
+export async function setPlanCompletionByCoachAction(formData: FormData): Promise<void> {
+  const principal = await requireCoachPrincipal();
+  const planItemId = String(formData.get("planItemId") ?? "");
+  const membershipId = String(formData.get("membershipId") ?? "");
+  const parsed = z.enum(["COMPLETED", "SKIPPED", "PENDING"]).safeParse(formData.get("status"));
+  if (!planItemId || !parsed.success) return;
+
+  await setPlanItemCompletionByCoach(db, principal, { planItemId, status: parsed.data });
+  if (membershipId) revalidatePath(`/coach/clients/${membershipId}`);
 }

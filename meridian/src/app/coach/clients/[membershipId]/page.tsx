@@ -17,6 +17,8 @@ import {
   addMilestoneAction,
   addPlanItemAction,
   addSessionNoteAction,
+  setPlanCompletionByCoachAction,
+  toggleMilestoneAction,
 } from "@/modules/coaching/actions";
 import { getThread } from "@/modules/messaging/queries";
 import { markThreadRead } from "@/modules/messaging/service";
@@ -144,18 +146,22 @@ export default async function ClientDetailPage({
                 </span>
                 <span className="flex items-center gap-3 text-[var(--color-stone)]">
                   <span>{isoDate(item.scheduledFor)}</span>
-                  <span
-                    style={{
-                      color:
-                        status === "COMPLETED"
-                          ? "var(--color-sage)"
-                          : status === "SKIPPED"
-                            ? "var(--color-warning, #b06a3f)"
-                            : "var(--color-stone)",
-                    }}
-                  >
-                    {status.toLowerCase()}
-                  </span>
+                  <form action={setPlanCompletionByCoachAction}>
+                    <input type="hidden" name="membershipId" value={m.id} />
+                    <input type="hidden" name="planItemId" value={item.id} />
+                    <input type="hidden" name="status" value={status === "COMPLETED" ? "PENDING" : "COMPLETED"} />
+                    <button
+                      type="submit"
+                      className="rounded border px-2.5 py-1 text-xs transition-colors"
+                      style={{
+                        borderColor: status === "COMPLETED" ? "var(--color-sage)" : "#e4ded4",
+                        background: status === "COMPLETED" ? "rgba(74,103,65,0.1)" : "#fff",
+                        color: status === "COMPLETED" ? "var(--color-sage)" : "var(--color-stone)",
+                      }}
+                    >
+                      {status === "COMPLETED" ? "✓ done" : "mark done"}
+                    </button>
+                  </form>
                 </span>
               </li>
             );
@@ -181,11 +187,36 @@ export default async function ClientDetailPage({
         </form>
         <ul className="mt-4 space-y-1.5 text-sm">
           {m.milestones.map((ms) => (
-            <li key={ms.id} className="flex justify-between">
-              <span className="text-[var(--color-ink)]">{ms.title}</span>
-              {ms.targetDate && (
-                <span className="text-[var(--color-stone)]">by {isoDate(ms.targetDate)}</span>
-              )}
+            <li key={ms.id} className="flex items-center justify-between gap-3">
+              <span
+                style={{
+                  color: ms.achievedAt ? "var(--color-sage)" : "var(--color-ink)",
+                  textDecoration: ms.achievedAt ? "line-through" : "none",
+                }}
+              >
+                {ms.title}
+              </span>
+              <span className="flex items-center gap-3">
+                {ms.targetDate && !ms.achievedAt && (
+                  <span className="text-[var(--color-stone)]">by {isoDate(ms.targetDate)}</span>
+                )}
+                <form action={toggleMilestoneAction}>
+                  <input type="hidden" name="membershipId" value={m.id} />
+                  <input type="hidden" name="milestoneId" value={ms.id} />
+                  <input type="hidden" name="achieved" value={ms.achievedAt ? "false" : "true"} />
+                  <button
+                    type="submit"
+                    className="rounded border px-2.5 py-1 text-xs transition-colors"
+                    style={{
+                      borderColor: ms.achievedAt ? "var(--color-sage)" : "#e4ded4",
+                      background: ms.achievedAt ? "rgba(74,103,65,0.1)" : "#fff",
+                      color: ms.achievedAt ? "var(--color-sage)" : "var(--color-stone)",
+                    }}
+                  >
+                    {ms.achievedAt ? "✓ achieved" : "mark achieved"}
+                  </button>
+                </form>
+              </span>
             </li>
           ))}
           {m.milestones.length === 0 && <li className="section-hint">No milestones set.</li>}

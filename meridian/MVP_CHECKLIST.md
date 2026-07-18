@@ -34,9 +34,9 @@ This file is the **durable source of truth** for the hourly build loop. Each run
   call" affordance is gated to tiers with `onDemandCalls` — enforced server-side in
   `requestCallAction`, not just hidden. Messaging panel hint reflects priority status.
 
-- [ ] **M3 — Coach abilities round-out.** Let the managing coach mark a milestone achieved
-  (toggle, audited) and mark a plan item complete on the client's behalf. Guarded + audited;
-  test the new guard path.
+- [x] **M3 — Coach abilities round-out.** The managing coach can mark a milestone achieved /
+  reopen it and complete/reopen a plan item on the client's behalf, from the client-detail page.
+  Both guarded by `assertCoachManagesMembership` and audited. 3 new guard tests (allow/deny/unknown).
 
 - [ ] **M4 — Premium styling pass on the logged-in app.** Elevate the client dashboard and
   coach workspace to match the caliber of the funnel: Cormorant headings, refined spacing,
@@ -46,4 +46,4 @@ This file is the **durable source of truth** for the hourly build loop. Each run
 - [ ] **M5 — Final pass.** Full typecheck + tests + build green; README "Current state" and
   roadmap updated to reflect the finished MVP; then stop the loop.
 
-_Last updated by the loop: M2 (tier enforcement) complete — 39 tests, build green._
+_Last updated by the loop: M3 (coach abilities) complete — 42 tests, build green._

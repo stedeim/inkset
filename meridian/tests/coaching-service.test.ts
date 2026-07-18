@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { PrismaClient } from "@prisma/client";
-import { addPlanItem, addSessionNote } from "@/modules/coaching/service";
+import {
+  addPlanItem,
+  addSessionNote,
+  setMilestoneAchieved,
+} from "@/modules/coaching/service";
 import { AccessError, type Principal } from "@/modules/access/guard";
 
 function fakeDb() {
@@ -19,6 +23,15 @@ function fakeDb() {
     },
     planItem: { create: async ({ data }: any) => ({ id: `p${++seq}`, ...data }) },
     sessionNote: { create: async ({ data }: any) => ({ id: `n${++seq}`, ...data }) },
+    milestone: {
+      findUnique: async ({ where }: any) =>
+        where.id === "ms_managed"
+          ? { id: "ms_managed", membership: { coachId: "coach_1" } }
+          : where.id === "ms_other"
+            ? { id: "ms_other", membership: { coachId: "coach_2" } }
+            : null,
+      update: async ({ data }: any) => ({ id: "ms_managed", ...data }),
+    },
     auditLog: { create: async ({ data }: any) => audits.push(data) },
     $transaction: async (fn: any) => fn(api),
     _planItems: planItems,
@@ -60,5 +73,25 @@ describe("coach mutations", () => {
     const db = fakeDb();
     await addSessionNote(db, admin, { membershipId: "m_other", body: "Reviewed labs." });
     expect(db._audits[0]).toMatchObject({ action: "session_note.create", actorId: "u_admin" });
+  });
+
+  it("lets the managing coach mark a milestone achieved (audited)", async () => {
+    const db = fakeDb();
+    await setMilestoneAchieved(db, coach, { milestoneId: "ms_managed", achieved: true });
+    expect(db._audits[0]).toMatchObject({ action: "milestone.achieve", actorId: "u_coach" });
+  });
+
+  it("blocks a coach from a milestone on a membership they do not manage", async () => {
+    const db = fakeDb();
+    await expect(
+      setMilestoneAchieved(db, otherCoach, { milestoneId: "ms_managed", achieved: true }),
+    ).rejects.toBeInstanceOf(AccessError);
+  });
+
+  it("rejects an unknown milestone", async () => {
+    const db = fakeDb();
+    await expect(
+      setMilestoneAchieved(db, coach, { milestoneId: "nope", achieved: true }),
+    ).rejects.toBeInstanceOf(AccessError);
   });
 });

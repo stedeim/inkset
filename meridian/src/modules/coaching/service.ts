@@ -1,5 +1,5 @@
-import type { PlanItemKind, PrismaClient } from "@prisma/client";
-import { assertCoachManagesMembership, type Principal } from "@/modules/access/guard";
+import type { CompletionStatus, PlanItemKind, PrismaClient } from "@prisma/client";
+import { AccessError, assertCoachManagesMembership, type Principal } from "@/modules/access/guard";
 import { recordAudit } from "@/lib/audit";
 
 /**
@@ -96,6 +96,62 @@ export async function addMilestone(
       entityType: "Milestone",
       entityId: milestone.id,
       metadata: { membershipId: input.membershipId },
+    });
+  });
+}
+
+/** Mark a milestone achieved (or reopen it). Guarded by the milestone's membership. */
+export async function setMilestoneAchieved(
+  db: PrismaClient,
+  principal: Principal,
+  input: { milestoneId: string; achieved: boolean },
+): Promise<void> {
+  const milestone = await db.milestone.findUnique({
+    where: { id: input.milestoneId },
+    select: { id: true, membership: { select: { coachId: true } } },
+  });
+  if (!milestone) throw new AccessError();
+  assertCoachManagesMembership(principal, milestone.membership);
+
+  await db.$transaction(async (tx) => {
+    await tx.milestone.update({
+      where: { id: input.milestoneId },
+      data: { achievedAt: input.achieved ? new Date() : null },
+    });
+    await recordAudit(tx, {
+      actorId: principal.userId,
+      action: input.achieved ? "milestone.achieve" : "milestone.reopen",
+      entityType: "Milestone",
+      entityId: input.milestoneId,
+    });
+  });
+}
+
+/** Set a plan item's completion on the client's behalf. Guarded by its membership. */
+export async function setPlanItemCompletionByCoach(
+  db: PrismaClient,
+  principal: Principal,
+  input: { planItemId: string; status: CompletionStatus },
+): Promise<void> {
+  const item = await db.planItem.findUnique({
+    where: { id: input.planItemId },
+    select: { id: true, membership: { select: { coachId: true } } },
+  });
+  if (!item) throw new AccessError();
+  assertCoachManagesMembership(principal, item.membership);
+
+  await db.$transaction(async (tx) => {
+    await tx.completion.upsert({
+      where: { planItemId: input.planItemId },
+      create: { planItemId: input.planItemId, status: input.status },
+      update: { status: input.status, notedAt: new Date() },
+    });
+    await recordAudit(tx, {
+      actorId: principal.userId,
+      action: "plan_item.complete_by_coach",
+      entityType: "PlanItem",
+      entityId: input.planItemId,
+      metadata: { status: input.status },
     });
   });
 }
