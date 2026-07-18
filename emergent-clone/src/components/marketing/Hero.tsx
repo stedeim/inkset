@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/components/Icon";
 import { STARTER_PROMPTS, AGENTS } from "@/lib/data";
+import { HeroPreview } from "@/components/marketing/HeroPreview";
 
 export function Hero() {
   const router = useRouter();
@@ -12,7 +13,8 @@ export function Hero() {
   function start(text: string) {
     const p = text.trim();
     if (!p) return;
-    router.push(`/app?prompt=${encodeURIComponent(p)}`);
+    // Route through the demo bypass → instant build, no signup wall.
+    router.push(`/demo?prompt=${encodeURIComponent(p)}`);
   }
 
   return (
@@ -28,7 +30,7 @@ export function Hero() {
             className="animate-fade-up chip mx-auto hover:border-brand-500/50 hover:text-white"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-accent-teal animate-pulse-glow" />
-            Now with a 5-agent build pipeline
+            Prompt → production in under a minute
             <Icon name="arrowRight" size={13} />
           </a>
 
@@ -42,9 +44,9 @@ export function Hero() {
             className="animate-fade-up mx-auto mt-5 max-w-xl text-pretty text-lg text-white/60"
             style={{ animationDelay: "120ms" }}
           >
-            A coordinated team of AI agents designs, codes, tests, and deploys a
-            production-ready full-stack app — from a single prompt. No coding
-            required.
+            Write one sentence. A team of five AI agents designs your app, writes
+            real React &amp; FastAPI code, tests it, and ships it live — while you
+            watch.
           </p>
 
           {/* Prompt box */}
@@ -76,10 +78,15 @@ export function Hero() {
                   className="btn btn-primary ml-auto"
                 >
                   <Icon name="bolt" size={16} />
-                  Build it
+                  Build it free
                 </button>
               </div>
             </div>
+
+            {/* friction-killer microcopy */}
+            <p className="mt-3 text-xs text-white/40">
+              No signup. No credit card. Watch it build in real time.
+            </p>
 
             {/* starter chips */}
             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
@@ -110,6 +117,11 @@ export function Hero() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* product shot */}
+        <div className="animate-fade-up" style={{ animationDelay: "320ms" }}>
+          <HeroPreview />
         </div>
       </div>
     </section>
