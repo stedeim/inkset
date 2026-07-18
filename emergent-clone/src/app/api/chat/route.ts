@@ -56,6 +56,68 @@ async function* streamWords(text: string) {
   }
 }
 
+// Stream from OpenRouter (OpenAI-compatible /chat/completions with SSE).
+async function streamOpenRouter(
+  controller: ReadableStreamDefaultController,
+  messages: Msg[],
+  apiKey: string,
+  model: string,
+) {
+  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+      // Optional attribution headers OpenRouter uses for rankings.
+      "HTTP-Referer": "https://emergent-clone.local",
+      "X-Title": "Emergent Clone",
+    },
+    body: JSON.stringify({
+      model,
+      stream: true,
+      max_tokens: 1024,
+      messages: [
+        { role: "system", content: SYSTEM },
+        ...messages.map((m) => ({ role: m.role, content: m.content })),
+      ],
+    }),
+  });
+
+  if (!res.ok || !res.body) {
+    const detail = await res.text().catch(() => res.statusText);
+    throw new Error(`OpenRouter ${res.status}: ${detail.slice(0, 300)}`);
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    // SSE frames are separated by blank lines.
+    const frames = buffer.split("\n\n");
+    buffer = frames.pop() ?? "";
+    for (const frame of frames) {
+      for (const line of frame.split("\n")) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith("data:")) continue;
+        const data = trimmed.slice(5).trim();
+        if (data === "[DONE]") return;
+        try {
+          const json = JSON.parse(data);
+          const delta = json?.choices?.[0]?.delta?.content;
+          if (delta) controller.enqueue(sse(delta));
+        } catch {
+          // partial/keep-alive frame — ignore
+        }
+      }
+    }
+  }
+}
+
 export async function POST(req: Request) {
   let messages: Msg[] = [];
   try {
@@ -65,16 +127,26 @@ export async function POST(req: Request) {
     return new Response("Bad request", { status: 400 });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  const model = process.env.ANTHROPIC_MODEL || "claude-sonnet-5";
+  // Provider precedence: OpenRouter → Anthropic → built-in simulation.
+  const openRouterKey = process.env.OPENROUTER_API_KEY;
+  const openRouterModel = process.env.OPENROUTER_MODEL || "z-ai/glm-5.2";
+  const anthropicKey = process.env.ANTHROPIC_API_KEY;
+  const anthropicModel = process.env.ANTHROPIC_MODEL || "claude-sonnet-5";
 
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        if (apiKey) {
-          const client = new Anthropic({ apiKey });
+        if (openRouterKey) {
+          await streamOpenRouter(
+            controller,
+            messages,
+            openRouterKey,
+            openRouterModel,
+          );
+        } else if (anthropicKey) {
+          const client = new Anthropic({ apiKey: anthropicKey });
           const anthropicStream = await client.messages.stream({
-            model,
+            model: anthropicModel,
             max_tokens: 1024,
             system: SYSTEM,
             messages: messages.map((m) => ({

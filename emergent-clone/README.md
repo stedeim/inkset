@@ -21,12 +21,16 @@ platform — built with **Next.js 15 (App Router)**, **React 19**, **TypeScript*
 
 ## AI builds — real or simulated
 
-The builder streams from `POST /api/chat`:
+The builder streams from `POST /api/chat`, which picks a provider in this order:
 
-- **With an `ANTHROPIC_API_KEY`** (see `.env.example`), it calls Claude and streams a
-  genuine build plan + follow-up edits.
-- **Without a key**, it falls back to a built-in, streamed simulation so the whole
-  experience works offline.
+1. **OpenRouter** — if `OPENROUTER_API_KEY` is set. OpenAI-compatible, so it can route
+   to Claude, GPT, Llama, and more. Choose any model via `OPENROUTER_MODEL`
+   (default `anthropic/claude-3.5-sonnet`). Get a key at
+   [openrouter.ai/keys](https://openrouter.ai/keys).
+2. **Anthropic** — if `ANTHROPIC_API_KEY` is set (uses the official SDK).
+3. **Built-in simulation** — no key needed, so the whole experience works offline.
+
+See `.env.example` for all variables.
 
 ## Run it
 
