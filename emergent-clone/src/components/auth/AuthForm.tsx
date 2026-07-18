@@ -43,7 +43,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           <p className="mt-1.5 text-sm text-white/50">
             {isSignup
               ? "Start building in seconds. No credit card to try."
-              : "Sign in to your Emergent workspace."}
+              : "Sign in to your Deimira workspace."}
           </p>
 
           <div className="mt-6 space-y-2.5">
@@ -109,7 +109,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         </div>
 
         <p className="mt-5 text-center text-sm text-white/50">
-          {isSignup ? "Already have an account?" : "New to Emergent?"}{" "}
+          {isSignup ? "Already have an account?" : "New to Deimira?"}{" "}
           <Link
             href={isSignup ? "/login" : "/signup"}
             className="font-medium text-brand-300 hover:underline"

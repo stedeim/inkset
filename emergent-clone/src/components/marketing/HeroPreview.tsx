@@ -16,7 +16,7 @@ export function HeroPreview() {
           <span className="h-3 w-3 rounded-full bg-[#28c840]" />
           <div className="mx-auto flex items-center gap-2 rounded-md bg-ink-900 px-3 py-1 font-mono text-[11px] text-white/40">
             <span className="h-1.5 w-1.5 rounded-full bg-accent-teal" />
-            ledgerly.emergent.app
+            ledgerly.deimira.app
           </div>
         </div>
 

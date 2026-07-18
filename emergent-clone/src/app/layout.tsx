@@ -15,12 +15,12 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Emergent — The Agentic Vibe-Coding Platform",
+  title: "Deimira — The Agentic Vibe-Coding Platform",
   description:
     "Describe your idea. A team of AI agents designs, codes, tests, and deploys a production-ready app for you. No coding required.",
-  metadataBase: new URL("https://emergent-clone.local"),
+  metadataBase: new URL("https://deimira.app"),
   openGraph: {
-    title: "Emergent — Build full-stack apps with AI",
+    title: "Deimira — Build full-stack apps with AI",
     description:
       "From prompt to production. A coordinated team of AI agents ships real apps built with React, FastAPI, and MongoDB.",
     type: "website",

@@ -15,7 +15,7 @@ function DemoBypass() {
   const params = useSearchParams();
 
   useEffect(() => {
-    signIn("demo@emergent.app", "Demo User");
+    signIn("demo@deimira.app", "Demo User");
     const prompt = params.get("prompt");
     const t = setTimeout(() => {
       if (prompt && prompt.trim()) {

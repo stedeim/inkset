@@ -4,7 +4,7 @@ import { Footer } from "@/components/marketing/Footer";
 import { Pricing } from "@/components/marketing/Pricing";
 
 export const metadata: Metadata = {
-  title: "Pricing — Emergent",
+  title: "Pricing — Deimira",
   description:
     "Simple, credit-based pricing. Start for $1. Every plan includes the full AI agent team and GitHub sync.",
 };

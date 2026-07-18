@@ -14,7 +14,7 @@ export function Features() {
             <br className="hidden sm:block" /> in one prompt box
           </h2>
           <p className="mt-4 text-lg text-white/55">
-            No scaffolding, no DevOps, no glue code. Emergent handles the entire
+            No scaffolding, no DevOps, no glue code. Deimira handles the entire
             lifecycle so you can focus on the idea.
           </p>
         </div>

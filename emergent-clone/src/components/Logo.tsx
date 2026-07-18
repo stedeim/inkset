@@ -14,7 +14,7 @@ export function Logo({ className = "" }: { className?: string }) {
         <span className="absolute -inset-1 rounded-lg bg-brand-500/40 blur-md opacity-0 transition-opacity group-hover:opacity-100" />
       </span>
       <span className="text-lg font-semibold tracking-tight text-white">
-        Emergent
+        Deimira
       </span>
     </Link>
   );

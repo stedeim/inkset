@@ -88,7 +88,7 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-8 text-sm text-white/40 sm:flex-row">
-          <p>© {new Date().getFullYear()} Emergent clone. A demo build.</p>
+          <p>© {new Date().getFullYear()} Deimira clone. A demo build.</p>
           <div className="flex gap-6">
             <Link href="/#" className="hover:text-white">
               Privacy

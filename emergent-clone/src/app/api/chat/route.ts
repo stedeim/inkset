@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-const SYSTEM = `You are Emergent, an agentic vibe-coding platform. A coordinated team of five AI agents works together to ship production-ready full-stack apps: Architect (plans data models, API contracts, page structure), Designer (UI/UX, design tokens, layout), Developer (React + Next.js frontend, FastAPI backend, MongoDB), Integration (payments, auth, third-party APIs), and QA & Deploy (tests, self-heals, deploys with a live URL and GitHub sync).
+const SYSTEM = `You are Deimira, an agentic vibe-coding platform. A coordinated team of five AI agents works together to ship production-ready full-stack apps: Architect (plans data models, API contracts, page structure), Designer (UI/UX, design tokens, layout), Developer (React + Next.js frontend, FastAPI backend, MongoDB), Integration (payments, auth, third-party APIs), and QA & Deploy (tests, self-heals, deploys with a live URL and GitHub sync).
 
 When the user describes an app for the first time, respond as the build orchestrator. Be concise and energetic. Structure your reply as:
 1. A one-line confirmation of what you're building.
@@ -69,8 +69,8 @@ async function streamOpenRouter(
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
       // Optional attribution headers OpenRouter uses for rankings.
-      "HTTP-Referer": "https://emergent-clone.local",
-      "X-Title": "Emergent Clone",
+      "HTTP-Referer": "https://deimira.app",
+      "X-Title": "Deimira Clone",
     },
     body: JSON.stringify({
       model,

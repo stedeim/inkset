@@ -8,7 +8,7 @@ export function Showcase() {
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div className="max-w-xl">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-300">
-              Built with Emergent
+              Built with Deimira
             </p>
             <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
               From idea to app gallery

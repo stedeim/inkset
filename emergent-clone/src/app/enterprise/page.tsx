@@ -5,7 +5,7 @@ import { Footer } from "@/components/marketing/Footer";
 import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = {
-  title: "Enterprise — Emergent",
+  title: "Enterprise — Deimira",
   description:
     "Ship internal tools and customer apps at scale with SSO, RBAC, audit logs, and dedicated support.",
 };
@@ -45,7 +45,7 @@ export default function EnterprisePage() {
               Ship software at <span className="gradient-text">scale</span>
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg text-white/60">
-              Give every team a full engineering pod. Emergent Enterprise adds the
+              Give every team a full engineering pod. Deimira Enterprise adds the
               security, control, and support your organization needs.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
