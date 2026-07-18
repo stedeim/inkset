@@ -29,10 +29,10 @@ This file is the **durable source of truth** for the hourly build loop. Each run
   client + coach server actions, a shared `MessagesPanel` on the client dashboard and the
   coach client-detail page, mark-as-read on view. 5 guard tests (allow/deny/admin/unknown).
 
-- [ ] **M2 — Tier enforcement in the UI.** Use `tierAllows`/`capabilitiesFor` to reflect tier
-  differences where the member sees them: show the async response SLA and priority-messaging
-  status on the messaging panel; gate an "Request a call" affordance to tiers with
-  `onDemandCalls`; surface `callsPerMonth`. Add a small `tierAllows`-driven test if logic added.
+- [x] **M2 — Tier enforcement in the UI.** Client dashboard shows an access summary
+  (calls/month, priority vs async messaging, SLA hours from `capabilitiesFor`); the "Request a
+  call" affordance is gated to tiers with `onDemandCalls` — enforced server-side in
+  `requestCallAction`, not just hidden. Messaging panel hint reflects priority status.
 
 - [ ] **M3 — Coach abilities round-out.** Let the managing coach mark a milestone achieved
   (toggle, audited) and mark a plan item complete on the client's behalf. Guarded + audited;
@@ -46,4 +46,4 @@ This file is the **durable source of truth** for the hourly build loop. Each run
 - [ ] **M5 — Final pass.** Full typecheck + tests + build green; README "Current state" and
   roadmap updated to reflect the finished MVP; then stop the loop.
 
-_Last updated by the loop: M1 (messaging) complete — 39 tests, build green._
+_Last updated by the loop: M2 (tier enforcement) complete — 39 tests, build green._

@@ -28,6 +28,29 @@ export async function sendClientMessageAction(formData: FormData): Promise<void>
   revalidatePath("/client");
 }
 
+/**
+ * Client requests an on-demand call. Only permitted for tiers whose policy
+ * allows it (enforced here, not just hidden in the UI). Posts a flagged message
+ * onto the coach thread.
+ */
+export async function requestCallAction(): Promise<void> {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "CLIENT") redirect("/login");
+
+  const membership = await getClientMembership(db, user.id);
+  if (!membership) return;
+
+  const { tierAllows } = await import("@/modules/tiers/policy");
+  if (!tierAllows(membership.tier, "onDemandCalls")) return; // server-side gate
+
+  const principal: Principal = { userId: user.id, role: "CLIENT" };
+  await sendMessage(db, principal, {
+    membershipId: membership.id,
+    body: "📞 I'd like to request an on-demand call at your earliest convenience.",
+  });
+  revalidatePath("/client");
+}
+
 /** Coach sends a message on a managed client's thread. */
 export async function sendCoachMessageAction(formData: FormData): Promise<void> {
   const user = await getCurrentUser();
