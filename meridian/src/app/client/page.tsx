@@ -33,7 +33,10 @@ export default async function ClientHome() {
 
   return (
     <div>
-      <h1 className="font-serif text-4xl text-[var(--color-ink)]">
+      <p className="page-eyebrow">
+        {today.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+      </p>
+      <h1 className="mt-3 font-serif text-4xl text-[var(--color-ink)]">
         Good to see you, {user.fullName.split(" ")[0]}.
       </h1>
 
@@ -66,9 +69,10 @@ export default async function ClientHome() {
           <div>
             <p className="field-label">Your access</p>
             <p className="text-sm text-[var(--color-ink)]">
-              {tier.callsPerMonth} coaching {tier.callsPerMonth === 1 ? "call" : "calls"} / month ·{" "}
+              <span className="tnum">{tier.callsPerMonth}</span> coaching{" "}
+              {tier.callsPerMonth === 1 ? "call" : "calls"} / month ·{" "}
               {tierAllows(membership.tier, "priorityMessaging") ? "Priority messaging" : "Async messaging"}{" "}
-              within {tier.asyncResponseSlaHours}h
+              within <span className="tnum">{tier.asyncResponseSlaHours}h</span>
             </p>
           </div>
           {tierAllows(membership.tier, "onDemandCalls") && (

@@ -75,7 +75,7 @@ export function TrackingSection({
         {pct !== null && (
           <p className="mt-4 text-sm text-[var(--color-stone)]">
             Plan consistency (7 days):{" "}
-            <span className="text-[var(--color-sage)]">{pct}%</span>
+            <span className="tnum text-[var(--color-sage)]">{pct}%</span>
           </p>
         )}
       </div>

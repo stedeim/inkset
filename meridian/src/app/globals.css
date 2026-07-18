@@ -466,3 +466,9 @@ textarea.field-input {
 .msg-form input { flex: 1; }
 .msg-form button { width: auto; padding-left: 1.4rem; padding-right: 1.4rem; }
 .unread-dot { display: inline-block; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--color-brass); color: #fff; font-size: 0.68rem; line-height: 18px; text-align: center; vertical-align: middle; margin-left: 8px; font-variant-numeric: tabular-nums; }
+
+/* Dashboard polish */
+.tnum { font-variant-numeric: tabular-nums; }
+.page-eyebrow { font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--color-brass); }
+.stat-num { font-family: var(--font-serif); font-variant-numeric: tabular-nums; line-height: 1; }
+.section-card { transition: border-color 0.15s ease; }

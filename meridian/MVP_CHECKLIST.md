@@ -38,12 +38,13 @@ This file is the **durable source of truth** for the hourly build loop. Each run
   reopen it and complete/reopen a plan item on the client's behalf, from the client-detail page.
   Both guarded by `assertCoachManagesMembership` and audited. 3 new guard tests (allow/deny/unknown).
 
-- [ ] **M4 — Premium styling pass on the logged-in app.** Elevate the client dashboard and
-  coach workspace to match the caliber of the funnel: Cormorant headings, refined spacing,
-  a quieter TopNav, tabular numerics on stats, considered empty states. Keep it warm/light
-  (the deliberate contrast to the dark acquisition world). No new dependencies.
+- [x] **M4 — Premium styling pass on the logged-in app.** Ink top bar with a gold Meridian
+  wordmark (echoes the funnel), gold small-caps page eyebrows (date on the client dashboard,
+  "Concierge workspace" for the coach), Cormorant headings throughout, and tabular numerics on
+  stats (SLA, calls/month, consistency, roster count). Warm/light — the deliberate contrast to
+  the dark acquisition world. No new dependencies.
 
 - [ ] **M5 — Final pass.** Full typecheck + tests + build green; README "Current state" and
   roadmap updated to reflect the finished MVP; then stop the loop.
 
-_Last updated by the loop: M3 (coach abilities) complete — 42 tests, build green._
+_Last updated by the loop: M4 (styling pass) complete — 42 tests, build green._

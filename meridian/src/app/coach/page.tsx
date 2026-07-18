@@ -15,9 +15,10 @@ export default async function CoachHome() {
 
   return (
     <div>
-      <h1 className="font-serif text-4xl text-[var(--color-ink)]">Your clients</h1>
+      <p className="page-eyebrow">Concierge workspace</p>
+      <h1 className="mt-3 font-serif text-4xl text-[var(--color-ink)]">Your clients</h1>
       <p className="mt-2 text-[var(--color-stone)]">
-        {roster.length} {roster.length === 1 ? "member" : "members"} under your care.
+        <span className="tnum">{roster.length}</span> {roster.length === 1 ? "member" : "members"} under your care.
       </p>
 
       <ul className="mt-8 space-y-2">
