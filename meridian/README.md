@@ -4,6 +4,23 @@ A private, concierge-style health & performance coaching platform for high-net-w
 individuals. Positioning is outcome-led — energy, consistency, transformation — not
 technology. (Working name; easy to rename.)
 
+## Current state — MVP complete
+
+The full member journey works end to end and is verified by tests + a production build
+(a live click-through only awaits a hosted database):
+
+- **Acquisition** — dark, cinematic membership application (anchored, value-stacked tiers)
+  → account → immersive one-question-at-a-time onboarding → personalized protocol reveal.
+- **Client** — warm dashboard: today's plan (complete/skip), daily check-in, 7-day energy
+  trend, plan-consistency, tier access summary, and a coach message thread.
+- **Coach** — roster → client detail: intake, plan editor, milestones, session notes,
+  messaging, and completing plan items / achieving milestones on the client's behalf.
+- **Foundations** — argon2 auth with revocable DB sessions, strict client/coach data
+  separation, tier policy enforced server-side, and an audit trail on every coach action.
+
+**42 unit tests · typecheck clean · production build green.** See `MVP_CHECKLIST.md` for the
+build log.
+
 ## Stack
 
 | Concern    | Choice                                        | Why |

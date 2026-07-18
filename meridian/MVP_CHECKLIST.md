@@ -44,7 +44,7 @@ This file is the **durable source of truth** for the hourly build loop. Each run
   stats (SLA, calls/month, consistency, roster count). Warm/light — the deliberate contrast to
   the dark acquisition world. No new dependencies.
 
-- [ ] **M5 — Final pass.** Full typecheck + tests + build green; README "Current state" and
-  roadmap updated to reflect the finished MVP; then stop the loop.
+- [x] **M5 — Final pass.** Full typecheck + tests + build verified green; README "Current
+  state" section added summarizing the finished MVP; loop stopped.
 
-_Last updated by the loop: M4 (styling pass) complete — 42 tests, build green._
+_Last updated by the loop: M5 complete — MVP done. 42 tests, typecheck clean, build green. Loop stopped._
