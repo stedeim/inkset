@@ -50,6 +50,9 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
+          <Link href="/demo" className="btn btn-ghost">
+            Live demo
+          </Link>
           <Link href="/login" className="btn btn-ghost">
             Sign in
           </Link>
@@ -84,6 +87,13 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-3 flex flex-col gap-2">
+            <Link
+              href="/demo"
+              onClick={() => setOpen(false)}
+              className="btn btn-secondary w-full"
+            >
+              Live demo
+            </Link>
             <Link href="/login" className="btn btn-secondary w-full">
               Sign in
             </Link>
