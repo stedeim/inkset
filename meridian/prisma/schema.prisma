@@ -1,0 +1,250 @@
+// Meridian data model.
+// Design principles:
+//  - Client and coach data are separate concerns joined only through explicit engagements.
+//  - Every mutation a coach performs against client data is recorded in AuditLog.
+//  - Tier lives on the membership, not the user, so a client can change tiers over time.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  COACH
+  ADMIN
+}
+
+enum Tier {
+  TIER_1 // High-End Premium
+  TIER_2 // Elite Concierge
+  TIER_3 // UHNW Private Office
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  PAUSED
+  CANCELLED
+}
+
+enum PlanItemKind {
+  WORKOUT
+  HABIT
+  RECOVERY
+  NUTRITION
+  ROUTINE
+}
+
+enum CompletionStatus {
+  PENDING
+  COMPLETED
+  SKIPPED
+}
+
+// ---------------------------------------------------------------------------
+// Identity & access
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(CLIENT)
+  fullName     String
+  mfaEnabled   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations depend on role. A user is either a client or a coach, never both.
+  membership   Membership?      @relation("ClientMembership")
+  coachProfile CoachProfile?
+  sessions     Session[]
+  sentMessages Message[]        @relation("SentMessages")
+  auditEntries AuditLog[]       @relation("ActorAudit")
+}
+
+// Server-side session records for auditable, revocable session handling.
+// The raw session token is never stored — only its SHA-256 hash — so a database
+// read cannot reconstruct a live session cookie.
+model Session {
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+  ipAddress  String?
+  userAgent  String?
+
+  @@index([userId])
+}
+
+model CoachProfile {
+  id        String       @id @default(cuid())
+  userId    String       @unique
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String? // e.g. "Performance Physician", "Head Coach"
+  bio       String?
+  members   Membership[] @relation("CoachMembers")
+  createdAt DateTime     @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Membership (the client's engagement + tier)
+// ---------------------------------------------------------------------------
+
+model Membership {
+  id            String           @id @default(cuid())
+  clientId      String           @unique
+  client        User             @relation("ClientMembership", fields: [clientId], references: [id], onDelete: Cascade)
+  tier          Tier
+  status        MembershipStatus @default(PENDING)
+  coachId       String?
+  coach         CoachProfile?    @relation("CoachMembers", fields: [coachId], references: [id])
+  startedAt     DateTime         @default(now())
+  renewsAt      DateTime?
+  intake        Intake?
+  planItems     PlanItem[]
+  checkIns      CheckIn[]
+  messageThread MessageThread?
+  milestones    Milestone[]
+  sessionNotes  SessionNote[]
+
+  @@index([coachId])
+}
+
+// ---------------------------------------------------------------------------
+// Onboarding / intake
+// ---------------------------------------------------------------------------
+
+model Intake {
+  id            String     @id @default(cuid())
+  membershipId  String     @unique
+  membership    Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  goals         Json // { energy, bodyComposition, performance, longevity, freeText }
+  constraints   Json // { weeklyHours, travelFrequency, dietaryPreferences, ... }
+  currentHabits Json // { sleep, training, nutrition, stress }
+  consentSigned Boolean    @default(false)
+  consentAt     DateTime?
+  completedAt   DateTime?
+  updatedAt     DateTime   @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Plan & tracking
+// ---------------------------------------------------------------------------
+
+model PlanItem {
+  id           String       @id @default(cuid())
+  membershipId String
+  membership   Membership   @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  kind         PlanItemKind
+  title        String
+  details      String?
+  scheduledFor DateTime // the day this item belongs to
+  createdById  String // coach who authored it
+  completions  Completion[]
+  createdAt    DateTime     @default(now())
+
+  @@index([membershipId, scheduledFor])
+}
+
+model Completion {
+  id         String           @id @default(cuid())
+  planItemId String
+  planItem   PlanItem         @relation(fields: [planItemId], references: [id], onDelete: Cascade)
+  status     CompletionStatus @default(PENDING)
+  notedAt    DateTime         @default(now())
+
+  @@unique([planItemId])
+}
+
+// Lightweight daily self-report powering the trend view.
+model CheckIn {
+  id           String     @id @default(cuid())
+  membershipId String
+  membership   Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  date         DateTime
+  energy       Int? // 1-10
+  sleepHours   Float?
+  mood         Int? // 1-10
+  createdAt    DateTime   @default(now())
+
+  @@unique([membershipId, date])
+  @@index([membershipId, date])
+}
+
+// ---------------------------------------------------------------------------
+// Messaging
+// ---------------------------------------------------------------------------
+
+model MessageThread {
+  id           String     @id @default(cuid())
+  membershipId String     @unique
+  membership   Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  messages     Message[]
+  createdAt    DateTime   @default(now())
+}
+
+model Message {
+  id        String        @id @default(cuid())
+  threadId  String
+  thread    MessageThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  senderId  String
+  sender    User          @relation("SentMessages", fields: [senderId], references: [id])
+  body      String
+  readAt    DateTime?
+  createdAt DateTime      @default(now())
+
+  @@index([threadId, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Coaching artifacts
+// ---------------------------------------------------------------------------
+
+model Milestone {
+  id           String     @id @default(cuid())
+  membershipId String
+  membership   Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  title        String
+  targetDate   DateTime?
+  achievedAt   DateTime?
+  createdAt    DateTime   @default(now())
+}
+
+model SessionNote {
+  id           String     @id @default(cuid())
+  membershipId String
+  membership   Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  authorId     String // coach user id
+  body         String
+  nextSteps    String?
+  createdAt    DateTime   @default(now())
+
+  @@index([membershipId, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Audit trail
+// ---------------------------------------------------------------------------
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actor      User     @relation("ActorAudit", fields: [actorId], references: [id])
+  action     String // e.g. "plan_item.create", "membership.tier.update"
+  entityType String
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId, createdAt])
+  @@index([entityType, entityId])
+}
